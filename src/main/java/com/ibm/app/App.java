@@ -15,9 +15,12 @@ public class App {
         // jar -cf Generator.jar Generator.class
         // java -jar Generator.jar ATM_LOCATION.csv AtmLocation.java
         if (args.length != 2) {
-            System.out.println("********* please use command ********* \n"
-                    + "java -jar entity-generator-app-1.0-SNAPSHOT.jar  <input file.csv> <output.java> \n"
-                    + "**************************************");
+            System.out.println(
+                "**************** RUN COMMAND ******************************\n" + 
+                "java -jar entity-generator-app-1.0-SNAPSHOT.jar <input file.csv> <output.java>\n" + 
+                "***********************************************************\n" + 
+                "By NATTAPAT SUTAPAKORN\n" + 
+                "***********************************************************");
         } else {
             String ans = "import javax.persistence.Column;\n" + "import javax.persistence.Entity;\n"
                     + "import javax.persistence.Id;\n" + "import javax.persistence.Table;\n"
@@ -40,18 +43,23 @@ public class App {
                         + "length = " + apiList.get(phrase)[3] + ")\n";
                 String fieldName = changeToCamel(phrase);
                 ans = ans + "\tprivate " + getDataType(apiList.get(phrase)[2]) + " " + fieldName + ";\n\n";
-                getSet = getSet + "\tpublic String get" + changeToPascal(fieldName) + "() {\n" + "\t\treturn "
-                        + fieldName + ";\n" + "\t\t}\n" + "\tpublic void set" + changeToPascal(fieldName) + "(String "
-                        + fieldName + ") {\n" + "\t\tthis." + fieldName + " = " + fieldName + ";\n" + "\t\t}\n";
+
+            //remove this comment to enable the get set generator
+            //     getSet = getSet + "\tpublic String get" + changeToPascal(fieldName) + "() {\n" + "\t\treturn "
+            //             + fieldName + ";\n" + "\t\t}\n" + "\tpublic void set" + changeToPascal(fieldName) + "(String "
+            //             + fieldName + ") {\n" + "\t\tthis." + fieldName + " = " + fieldName + ";\n" + "\t\t}\n";
+            // }
+            // ans = ans + getSet + "}";
             }
-            ans = ans + getSet + "}";
+
             FileWriter writer = new FileWriter(args[1]);
             writer.write(ans);
             writer.close();
             System.out.println("Generated model into the file " + args[1]);
         }
-
     }
+
+    
 
     private static String changeToCamel(String phrase) {
         // String tem = phrase;
@@ -83,9 +91,10 @@ public class App {
     private static String getDataType(String dataType) {
         if ("VARCHAR".equals(dataType)) {
             return "String";
+        } else if("DECIMAL".equals(dataType)){
+            return "Double"; 
         } else {
             return "String";
         }
-        // to be implement other datatype
     }
 }
